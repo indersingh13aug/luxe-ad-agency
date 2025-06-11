@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
+import { ChevronDown, Menu, X } from 'lucide-react'
 import { useState } from 'react'
 
 export default function Navbar() {
-  const [isServicesOpen, setIsServicesOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false)
 
   return (
     <nav className="bg-[#0f172a] text-white shadow-md sticky top-0 z-50">
@@ -15,41 +16,22 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium">
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium relative">
             <Link to="/" className="hover:text-cyan-400 transition-colors">Home</Link>
             <Link to="/about" className="hover:text-cyan-400 transition-colors">About Us</Link>
 
+            {/* Services Dropdown with Icon */}
             <div className="relative group">
-              <button
-                onMouseEnter={() => setIsServicesOpen(true)}
-                onMouseLeave={() => setIsServicesOpen(false)}
-                className="hover:text-cyan-400 transition-colors"
-              >
+              <button className="flex items-center gap-1 hover:text-cyan-400 transition-colors">
                 Services
+                <ChevronDown size={18} className="transition-transform duration-300 group-hover:rotate-180" />
               </button>
-              {isServicesOpen && (
-                <ul
-                  className="absolute left-0 top-full mt-2 bg-white text-black rounded-md shadow-lg z-50 w-56 py-2"
-                  onMouseEnter={() => setIsServicesOpen(true)}
-                  onMouseLeave={() => setIsServicesOpen(false)}
-                >
-                  {[
-                    { name: "RWA Advertising", path: "/services/rwa" },
-                    { name: "Commercial Advertising", path: "/services/commercial" },
-                    { name: "Metro Advertising", path: "/services/metro" },
-                    { name: "Multiplex Advertising", path: "/services/multiplex" }
-                  ].map(service => (
-                    <li key={service.path}>
-                      <Link
-                        to={service.path}
-                        className="block px-4 py-2 hover:bg-gray-100 transition-colors"
-                      >
-                        {service.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <div className="absolute top-full left-0 mt-2 w-56 bg-white text-black rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                <Link to="/services/rwa" className="block px-4 py-2 hover:bg-gray-100">RWA Advertising</Link>
+                <Link to="/services/commercial" className="block px-4 py-2 hover:bg-gray-100">Commercial Advertising</Link>
+                <Link to="/services/metro" className="block px-4 py-2 hover:bg-gray-100">Metro Advertising</Link>
+                <Link to="/services/multiplex" className="block px-4 py-2 hover:bg-gray-100">Multiplex Advertising</Link>
+              </div>
             </div>
 
             <Link to="/contact" className="hover:text-cyan-400 transition-colors">Contact Us</Link>
@@ -57,35 +39,41 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Toggle Menu">
-              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {isMobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-[#1e293b] rounded-md py-4 px-4 space-y-2 shadow-inner animate-fade-in">
-            <Link to="/" className="block text-white py-2 hover:text-cyan-400">Home</Link>
-            <Link to="/about" className="block text-white py-2 hover:text-cyan-400">About Us</Link>
+          <div className="md:hidden flex flex-col gap-2 pb-4">
+            <Link to="/" className="block px-2 py-2 hover:bg-gray-800 rounded">Home</Link>
+            <Link to="/about" className="block px-2 py-2 hover:bg-gray-800 rounded">About Us</Link>
 
-            <details className="text-white">
-              <summary className="cursor-pointer py-2 hover:text-cyan-400">Services</summary>
-              <ul className="pl-4 mt-1 space-y-1 text-sm text-gray-300">
-                <li><Link to="/services/rwa" className="block hover:text-white">RWA Advertising</Link></li>
-                <li><Link to="/services/commercial" className="block hover:text-white">Commercial Advertising</Link></li>
-                <li><Link to="/services/metro" className="block hover:text-white">Metro Advertising</Link></li>
-                <li><Link to="/services/multiplex" className="block hover:text-white">Multiplex Advertising</Link></li>
-              </ul>
-            </details>
+            {/* Mobile Services Collapsible */}
+            <div className="px-2">
+              <button
+                onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
+                className="flex items-center justify-between w-full py-2 hover:bg-gray-800 rounded px-2"
+              >
+                <span>Services</span>
+                <ChevronDown
+                  size={18}
+                  className={`transition-transform ${isMobileServicesOpen ? 'rotate-180' : ''}`}
+                />
+              </button>
+              {isMobileServicesOpen && (
+                <div className="ml-4 mt-1 space-y-1">
+                  <Link to="/services/rwa" className="block px-2 py-1 hover:bg-gray-800 rounded">RWA Advertising</Link>
+                  <Link to="/services/commercial" className="block px-2 py-1 hover:bg-gray-800 rounded">Commercial Advertising</Link>
+                  <Link to="/services/metro" className="block px-2 py-1 hover:bg-gray-800 rounded">Metro Advertising</Link>
+                  <Link to="/services/multiplex" className="block px-2 py-1 hover:bg-gray-800 rounded">Multiplex Advertising</Link>
+                </div>
+              )}
+            </div>
 
-            <Link to="/contact" className="block text-white py-2 hover:text-cyan-400">Contact Us</Link>
+            <Link to="/contact" className="block px-2 py-2 hover:bg-gray-800 rounded">Contact Us</Link>
           </div>
         )}
       </div>
