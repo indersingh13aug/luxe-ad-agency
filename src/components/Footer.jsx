@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
@@ -39,8 +39,9 @@ export default function Footer() {
       </div>
 
       <div className="text-center text-sm text-gray-500 py-4 border-t border-gray-700">
-        &copy; {new Date().getFullYear()} Vibrant Ads. All rights reserved.
+        &copy; {new Date().getFullYear()} Vibrant Ads. All rights reserved.<br />
+        Developed by <a href="https://webcoreai.netlify.app/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-400">WebCore AI Solutions</a>
       </div>
     </footer>
-  )
+  );
 }
